@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="mythical dragons/serpents">
+  <link rel="stylesheet" href="./styles/styles.css">
   <title>Horizontal Scroller</title>
 </head>
 <body>
@@ -48,12 +50,101 @@
           <div class="content">
             <h1>Qinglong, The Azure Dragon</h1>
             <p>
-              Qinglong is one of the Dragon Gods who represent the mount or chthonic forces of the Five Reagions' Highest Deities, and ruler of the East Blue. Its scales shimmer in various shades of blue, representing its connection to the heavens and water. Considered a benevolent and protective creature, Qinglong is often associated with positive attributes, prosperity, and good fortune to ward off negative forces.
+              Qinglong is one of the Dragon Gods who represent the mount or chthonic forces of the Five Reagions' Highest Deities, and ruler of the East Blue. Its scales shimmer in various shades of blue representing its connection to the heavens and water. Considered a benevolent and protective creature, Qinglong is often associated with positive attributes, prosperity, and good fortune warding off negative forces.
             </p>
           </div>
         </div>
       </section>
     </div>
   </div>
+
+  <div class="img-container">
+    <img src="./assets/pngwing.com.png" data-distance="80" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="200" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="300" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="140" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="40" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="210" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="190" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="155" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="80" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="58" alt="parallax vector fish">
+    <img src="./assets/pngwing.com.png" data-distance="227" alt="parallax vector fish">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>  
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.24/bundled/lenis.min.js"></script> 
+
+  <script>
+
+    const slider = document.querySelector('.slider');
+    const sections = gsap.utils.toArray('.slider section');
+    const fishies = gsap.utils.toArray('.img-container img');
+
+    let timeline = gsap.timeline({
+      defaults: {
+        ease: 'none'
+      },
+      scrollTrigger: {
+        trigger: slider,
+        pin: true,
+        scrub: 2,
+        end: () => "+=" + slider.offsetWidth
+      }
+    });
+
+    timeline.to(slider, {
+      xPercent: -66
+    }, "<");
+
+    sections.forEach((stop, index) => {
+
+      timeline
+        .from(stop.querySelector('.content'), {
+          yPercent: -50,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: stop.querySelector('.content'),
+            start: 'left center',
+            end: 'center center',
+            containerAnimation: timeline,
+            scrub: true
+          }
+        })
+        
+        .from(stop.querySelector('img'), {
+          xPercent: 40,
+          yPercent: -100,
+          ease: 'elastic.out(1,1)',
+          scrollTrigger: {
+            trigger: stop.querySelector('img'),
+            scrub: 2,
+            containerAnimation: timeline
+          }
+        }, "<")
+    });
+
+    fishies.forEach((fish, index) => {
+      gsap.from(fish, {
+        xPercent: fish.dataset.distance,
+        scrollTrigger: {
+          scrub: 0.3
+        }
+      })
+    })
+
+    // smooth scroll
+
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+  </script>
 </body>
 </html>
